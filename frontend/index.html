@@ -1750,7 +1750,9 @@ complaintForm.addEventListener("submit", async (e) => {
 
   const submitBtn = document.querySelector(".submit-btn");
 
-  // 🔥 Disable button BEFORE request
+  // 🔥 instant feedback
+  alert("Submitting your complaint... ⏳");
+
   submitBtn.innerText = "Submitting...";
   submitBtn.disabled = true;
 
@@ -1769,39 +1771,36 @@ complaintForm.addEventListener("submit", async (e) => {
     const res = await fetch(`${API_BASE}/complaints`, {
       method: "POST",
       headers: {
-        Authorization: "Bearer " + token, // ✅ correct (no Content-Type)
+        Authorization: "Bearer " + token,
       },
       body: formData,
     });
 
-    const data = await res.json();
+    let data = null;
+    try {
+      data = await res.json();
+    } catch (e) {
+      console.warn("No JSON response");
+    }
 
     if (!res.ok) {
-      alert(data.message || "Error submitting complaint ❌");
-
-      // 🔥 re-enable button on failure
-      submitBtn.innerText = "Submit Complaint";
-      submitBtn.disabled = false;
+      alert(data?.message || "Error submitting complaint ❌");
       return;
     }
 
+    // ✅ success confirmation
     alert("Complaint Submitted Successfully ✅");
 
-    complaintForm.reset(); // ✅ fixed typo
+    complaintForm.reset();
 
-    setTimeout(async () => {
-      submitBtn.innerText = "Submit Complaint";
-      submitBtn.disabled = false;
-
-      await loadMyComplaints();
-      showSection("my-complaints");
-    }, 1000);
+    await loadMyComplaints();
+    showSection("my-complaints");
 
   } catch (err) {
     console.error(err);
     alert("Something went wrong ❌");
-
-    // 🔥 re-enable button on error
+  } finally {
+    // 🔥 always reset button
     submitBtn.innerText = "Submit Complaint";
     submitBtn.disabled = false;
   }
