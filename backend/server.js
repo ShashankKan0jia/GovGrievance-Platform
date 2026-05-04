@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
+// const path = require("path");
 
 const connectDB = require("./config/db");
 
@@ -43,13 +43,13 @@ app.use("/api/admin", adminRoutes);
 
 /* -------------------- PRODUCTION BUILD -------------------- */
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"));
-  });
-}
+//   app.get("*", (req, res) => {
+//     res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"));
+//   });
+// }
 
 /* -------------------- ERROR HANDLER -------------------- */
 
