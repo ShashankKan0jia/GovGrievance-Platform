@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Dashboard - GovGrievance</title>
+
+    <style>
+      body {
+        font-family: Arial;
+        background: #f4f6f9;
+        margin: 0;
+        padding: 20px;
+      }
+
+      h1 {
+        color: #1a4f8c;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: white;
+      }
+
+      th,
+      td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+      }
+
+      th {
+        background: #1a4f8c;
+        color: white;
+      }
+
+      select {
+        padding: 6px;
+      }
+
+      button {
+        padding: 6px 12px;
+        background: #1a4f8c;
+        color: white;
+        border: none;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #0a2d5c;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Admin Complaint Dashboard</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>User</th>
+          <th>Category</th>
+          <th>Title</th>
+          <th>Status</th>
+          <th>Change Status</th>
+        </tr>
+      </thead>
+
+      <tbody id="complaintsTable"></tbody>
+    </table>
+
+    <script>
+      const API = "http://localhost:5000/api";
+
+      async function loadComplaints() {
+        const token = localStorage.getItem("token");
+
+        const res = await fetch(`${API}/admin/complaints`, {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        });
+
+        const data = await res.json();
+
+        const table = document.getElementById("complaintsTable");
+        table.innerHTML = "";
+
+        data.forEach((c) => {
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+
+<td>${c._id}</td>
+<td>${c.userId?.name || "User"}</td>
+<td>${c.category}</td>
+<td>${c.title}</td>
+<td>${c.status}</td>
+
+<td>
+
+<select id="status-${c._id}">
+<option>Pending</option>
+<option>In Progress</option>
+<option>Resolved</option>
+</select>
+
+<button onclick="updateStatus('${c._id}')">Update</button>
+
+</td>
+
+`;
+
+          table.appendChild(row);
+        });
+      }
+
+      async function updateStatus(id) {
+        const token = localStorage.getItem("token");
+
+        const status = document.getElementById(`status-${id}`).value;
+
+        await fetch(`${API}/admin/complaints/${id}`, {
+          method: "PUT",
+
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+
+          body: JSON.stringify({ status }),
+        });
+
+        alert("Status Updated");
+
+        loadComplaints();
+      }
+
+      loadComplaints();
+    </script>
+  </body>
+</html>

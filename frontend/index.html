@@ -1,0 +1,1891 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GovGrievance | Government Complaint Portal</title>
+    <link rel="icon" type="image/png" href="./logo.png?v=2" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Public+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-blue: #1a4f8c;
+        --primary-dark: #0a2d5c;
+        --secondary-blue: #2a6ebb;
+        --accent-green: #2a8a5e;
+        --accent-red: #c53030;
+        --accent-yellow: #e4a000;
+        --light-gray: #f8fafc;
+        --medium-gray: #e2e8f0;
+        --dark-gray: #4a5568;
+        --text-dark: #2d3748;
+        --text-light: #718096;
+        --white: #ffffff;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        --radius-sm: 6px;
+        --radius-md: 8px;
+        --radius-lg: 12px;
+        --transition: all 0.2s ease;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Public Sans", sans-serif;
+        color: var(--text-dark);
+        background-color: var(--light-gray);
+        line-height: 1.6;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5 {
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+        line-height: 1.3;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Header Styles */
+      header {
+        background-color: var(--white);
+        box-shadow: var(--shadow-sm);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        border-bottom: 1px solid var(--medium-gray);
+      }
+
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 0;
+        max-width: 95%;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .logo-icon {
+        background: linear-gradient(
+          135deg,
+          var(--primary-blue),
+          var(--secondary-blue)
+        );
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius-md);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+        font-size: 1.5rem;
+      }
+
+      .logo-text h1 {
+        font-size: 1.5rem;
+        color: var(--primary-dark);
+        margin-bottom: 2px;
+      }
+
+      .logo-text span {
+        font-size: 0.85rem;
+        color: var(--dark-gray);
+        letter-spacing: 0.5px;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+        gap: 4px;
+      }
+
+      nav a {
+        color: var(--dark-gray);
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1rem;
+        padding: 10px 18px;
+        border-radius: var(--radius-sm);
+        transition: var(--transition);
+        position: relative;
+      }
+
+      nav a:hover {
+        color: var(--primary-blue);
+        background-color: rgba(26, 79, 140, 0.05);
+      }
+
+      nav a.active {
+        color: var(--primary-blue);
+        background-color: rgba(26, 79, 140, 0.08);
+        font-weight: 600;
+      }
+
+      nav a.active::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 18px;
+        right: 18px;
+        height: 2px;
+        background-color: var(--primary-blue);
+        border-radius: 1px;
+      }
+
+      .user-controls {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .auth-buttons {
+        display: flex;
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 10px 22px;
+        border-radius: var(--radius-sm);
+        font-weight: 600;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: var(--transition);
+        border: none;
+        font-family: "Inter", sans-serif;
+        text-decoration: none;
+        display: inline-block;
+      }
+
+      .btn-outline {
+        background-color: transparent;
+        color: var(--primary-blue);
+        border: 1.5px solid var(--primary-blue);
+      }
+
+      .btn-outline:hover {
+        background-color: rgba(26, 79, 140, 0.08);
+      }
+
+      .btn-primary {
+        background-color: var(--primary-blue);
+        color: var(--white);
+      }
+
+      .btn-primary:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-md);
+      }
+
+      .user-profile {
+        display: none;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 16px;
+        background-color: rgba(26, 79, 140, 0.05);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--medium-gray);
+      }
+
+      .user-profile.active {
+        display: flex;
+      }
+
+      .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: var(--primary-blue);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+        font-weight: 600;
+      }
+
+      .user-info h4 {
+        font-size: 0.95rem;
+        margin-bottom: 2px;
+      }
+
+      .user-info span {
+        font-size: 0.8rem;
+        color: var(--text-light);
+      }
+
+      /* Hero Section */
+      .hero {
+        background: linear-gradient(
+          135deg,
+          var(--primary-dark) 0%,
+          var(--primary-blue) 100%
+        );
+        color: var(--white);
+        padding: 80px 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%231a4f8c' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+      }
+
+      .hero-container {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+        padding-top: 20px;
+      }
+
+      .hero h2 {
+        font-size: 2.8rem;
+        margin-bottom: 20px;
+        font-weight: 700;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+        opacity: 0.9;
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .btn-hero {
+        background-color: var(--accent-green);
+        color: var(--white);
+        padding: 14px 36px;
+        font-size: 1.1rem;
+        border-radius: var(--radius-md);
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+      }
+
+      .btn-hero:hover {
+        background-color: #23744d;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+        text-decoration: none;
+      }
+
+      /* Main Content */
+      main {
+        padding: 40px 0 60px;
+        flex: 1;
+      }
+
+      /* Section Title with more spacing */
+      .section-title {
+        margin-bottom: 40px;
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      .section-title h2 {
+        font-size: 2.2rem;
+        color: var(--primary-dark);
+        margin-bottom: 12px;
+      }
+
+      .section-title p {
+        color: var(--text-light);
+        font-size: 1.1rem;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      /* Categories Section */
+      .categories {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 24px;
+        margin-bottom: 60px;
+      }
+
+      .category-card {
+        background-color: var(--white);
+        border-radius: var(--radius-lg);
+        padding: 28px;
+        text-align: center;
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
+        cursor: pointer;
+        border: 1px solid var(--medium-gray);
+      }
+
+      .category-card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--primary-blue);
+      }
+
+      .category-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: var(--radius-md);
+        background-color: rgba(26, 79, 140, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        color: var(--primary-blue);
+        font-size: 1.8rem;
+      }
+
+      .category-card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+        color: var(--primary-dark);
+      }
+
+      .category-card p {
+        color: var(--text-light);
+        font-size: 0.95rem;
+      }
+
+      /* Complaint Form */
+      .complaint-form {
+        background-color: var(--white);
+        border-radius: var(--radius-lg);
+        padding: 40px;
+        box-shadow: var(--shadow-md);
+        margin-bottom: 60px;
+        border: 1px solid var(--medium-gray);
+      }
+
+      .form-group {
+        margin-bottom: 28px;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--text-dark);
+        font-size: 0.95rem;
+      }
+
+      .required::after {
+        content: " *";
+        color: var(--accent-red);
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1.5px solid var(--medium-gray);
+        border-radius: var(--radius-sm);
+        font-size: 1rem;
+        font-family: "Public Sans", sans-serif;
+        transition: var(--transition);
+        background-color: var(--white);
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 3px rgba(26, 79, 140, 0.1);
+      }
+
+      textarea {
+        min-height: 150px;
+        resize: vertical;
+      }
+
+      .file-upload {
+        border: 2px dashed var(--medium-gray);
+        padding: 40px 20px;
+        text-align: center;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: var(--transition);
+        background-color: rgba(226, 232, 240, 0.2);
+      }
+
+      .file-upload:hover {
+        border-color: var(--primary-blue);
+        background-color: rgba(26, 79, 140, 0.03);
+      }
+
+      .file-upload i {
+        font-size: 2.5rem;
+        color: var(--primary-blue);
+        margin-bottom: 12px;
+        opacity: 0.7;
+      }
+
+      .submit-btn {
+        background-color: var(--accent-green);
+        color: var(--white);
+        padding: 14px 36px;
+        font-size: 1.05rem;
+        border-radius: var(--radius-md);
+        display: block;
+        margin: 40px auto 0;
+        min-width: 200px;
+      }
+
+      .submit-btn:hover {
+        background-color: #23744d;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      /* Track Complaint */
+      .track-section {
+        background-color: var(--white);
+        border-radius: var(--radius-lg);
+        padding: 40px;
+        box-shadow: var(--shadow-md);
+        margin-bottom: 60px;
+        border: 1px solid var(--medium-gray);
+      }
+
+      .track-form {
+        display: flex;
+        max-width: 600px;
+        margin: 0 auto 30px;
+      }
+
+      .track-form input {
+        flex-grow: 1;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        border-right: none;
+      }
+
+      .track-form button {
+        background-color: var(--primary-blue);
+        color: var(--white);
+        border: none;
+        padding: 0 30px;
+        border-top-right-radius: var(--radius-sm);
+        border-bottom-right-radius: var(--radius-sm);
+        cursor: pointer;
+        font-weight: 600;
+        transition: var(--transition);
+      }
+
+      .track-form button:hover {
+        background-color: var(--primary-dark);
+      }
+
+      .track-result {
+        display: none;
+        background-color: var(--light-gray);
+        border-radius: var(--radius-lg);
+        padding: 32px;
+        margin-top: 30px;
+        border-left: 4px solid var(--primary-blue);
+      }
+
+      .track-result.active {
+        display: block;
+      }
+
+      .track-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 1px solid var(--medium-gray);
+      }
+
+      .status-badge {
+        display: inline-block;
+        padding: 6px 16px;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        letter-spacing: 0.3px;
+      }
+
+      .status-pending {
+        background-color: rgba(228, 160, 0, 0.1);
+        color: #b7791f;
+        border: 1px solid rgba(228, 160, 0, 0.2);
+      }
+
+      .status-inprogress {
+        background-color: rgba(26, 79, 140, 0.1);
+        color: var(--primary-blue);
+        border: 1px solid rgba(26, 79, 140, 0.2);
+      }
+
+      .status-resolved {
+        background-color: rgba(42, 138, 94, 0.1);
+        color: var(--accent-green);
+        border: 1px solid rgba(42, 138, 94, 0.2);
+      }
+
+      /* My Complaints */
+      .complaints-container {
+        min-height: 500px;
+      }
+
+      .complaints-list {
+        display: grid;
+        gap: 20px;
+      }
+
+      .complaint-card {
+        background-color: var(--white);
+        border-radius: var(--radius-lg);
+        padding: 24px;
+        box-shadow: var(--shadow-sm);
+        border-left: 4px solid var(--primary-blue);
+        transition: var(--transition);
+        border: 1px solid var(--medium-gray);
+      }
+
+      .complaint-card:hover {
+        box-shadow: var(--shadow-md);
+      }
+
+      .complaint-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 16px;
+      }
+
+      .complaint-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--primary-dark);
+      }
+
+      .complaint-date {
+        color: var(--text-light);
+        font-size: 0.9rem;
+      }
+
+      .complaint-body p {
+        margin-bottom: 16px;
+        color: var(--text-dark);
+      }
+
+      .complaint-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        padding-top: 16px;
+        border-top: 1px solid var(--medium-gray);
+      }
+
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(10, 45, 92, 0.7);
+        z-index: 2000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .modal.active {
+        display: flex;
+      }
+
+      .modal-content {
+        background-color: var(--white);
+        width: 100%;
+        max-width: 480px;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        animation: modalFade 0.3s ease;
+        box-shadow: var(--shadow-lg);
+      }
+
+      @keyframes modalFade {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .modal-header {
+        background-color: var(--primary-dark);
+        color: var(--white);
+        padding: 24px;
+        text-align: center;
+      }
+
+      .modal-header h3 {
+        font-size: 1.5rem;
+      }
+
+      .close-modal {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: none;
+        border: none;
+        color: var(--white);
+        font-size: 1.8rem;
+        cursor: pointer;
+        line-height: 1;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+      }
+
+      .close-modal:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .modal-body {
+        padding: 32px;
+      }
+
+      .form-links {
+        text-align: center;
+        margin-top: 24px;
+        font-size: 0.95rem;
+      }
+
+      .form-links a {
+        color: var(--primary-blue);
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .form-links a:hover {
+        text-decoration: underline;
+      }
+
+      /* Footer */
+      footer {
+        background-color: var(--primary-dark);
+        color: var(--white);
+        padding: 60px 0 30px;
+        margin-top: auto;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+
+      .footer-column h3 {
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        color: var(--white);
+        position: relative;
+        padding-bottom: 12px;
+      }
+
+      .footer-column h3::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 40px;
+        height: 3px;
+        background-color: var(--accent-green);
+        border-radius: 2px;
+      }
+
+      .footer-column p {
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 20px;
+        font-size: 0.95rem;
+      }
+
+      .footer-column ul {
+        list-style: none;
+      }
+
+      .footer-column ul li {
+        margin-bottom: 12px;
+      }
+
+      .footer-column ul li a {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: var(--transition);
+        font-size: 0.95rem;
+      }
+
+      .footer-column ul li a:hover {
+        color: var(--white);
+        padding-left: 5px;
+      }
+
+      .contact-info {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .contact-info div {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .social-links {
+        display: flex;
+        gap: 16px;
+        margin-top: 20px;
+      }
+
+      .social-links a {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--white);
+        transition: var(--transition);
+      }
+
+      .social-links a:hover {
+        background-color: var(--accent-green);
+        transform: translateY(-2px);
+      }
+
+      .copyright {
+        text-align: center;
+        padding-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.9rem;
+      }
+
+      /* Remove underline from all buttons */
+      .btn,
+      .btn-hero,
+      .btn-outline,
+      .btn-primary {
+        text-decoration: none !important;
+      }
+
+      /* Section spacing */
+      #categoriesSection,
+      #fileComplaintSection,
+      #trackComplaintSection,
+      #myComplaintsSection {
+        padding-top: 30px;
+      }
+
+      #fileComplaintSection .section-title {
+        margin-top: 60px;
+      }
+
+      #trackComplaintSection .section-title {
+        margin-top: 60px;
+      }
+
+      #myComplaintsSection .section-title {
+        margin-top: 60px;
+      }
+
+      /* Responsive */
+      @media (max-width: 992px) {
+        .header-container {
+          flex-direction: column;
+          gap: 20px;
+          padding: 20px 0;
+        }
+
+        nav ul {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        .hero h2 {
+          font-size: 2.4rem;
+        }
+
+        .hero p {
+          font-size: 1.1rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .form-row {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .track-form {
+          flex-direction: column;
+        }
+
+        .track-form input {
+          border-radius: var(--radius-sm);
+          margin-bottom: 12px;
+          border-right: 1.5px solid var(--medium-gray);
+        }
+
+        .track-form button {
+          border-radius: var(--radius-sm);
+          padding: 14px;
+        }
+
+        .complaint-header,
+        .complaint-footer {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+
+        .complaint-footer > div {
+          width: 100%;
+        }
+
+        .hero h2 {
+          font-size: 2rem;
+        }
+
+        .section-title h2 {
+          font-size: 1.8rem;
+        }
+
+        .complaint-form {
+          padding: 30px 20px;
+        }
+
+        .section-title {
+          margin-top: 40px;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .categories {
+          grid-template-columns: 1fr;
+        }
+
+        .auth-buttons {
+          flex-direction: column;
+          width: 100%;
+        }
+
+        .auth-buttons .btn {
+          width: 100%;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container header-container">
+  <div class="logo" style="display: flex; align-items: center;">
+    
+    <!-- LOGO IMAGE -->
+    <img 
+      src="logo.png" 
+      alt="GovGrievance Logo"
+      style="width: 42px; height: 42px; object-fit: contain; margin-right: 10px;"
+    />
+
+    <!-- TEXT -->
+    <div class="logo-text">
+      <h1>GovGrievance</h1>
+      <span>Government Complaint Portal</span>
+          </div>
+        </div>
+
+        <nav>
+          <ul>
+            <li><a href="#" class="active" data-section="home">Home</a></li>
+            <li>
+              <a href="#" data-section="file-complaint">File Complaint</a>
+            </li>
+            <li>
+              <a href="#" data-section="track-complaint">Track Complaint</a>
+            </li>
+            <li><a href="#" data-section="my-complaints">My Complaints</a></li>
+
+            <!-- ADMIN BUTTON -->
+            <li id="adminNav" style="display: none">
+              <a href="admin.html">Admin Dashboard</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="user-controls">
+          <div class="auth-buttons" id="authButtons">
+            <button class="btn btn-outline" id="loginBtn">Login</button>
+            <button class="btn btn-primary" id="signupBtn">Sign Up</button>
+          </div>
+
+          <div class="user-profile" id="userProfile">
+            <div class="user-avatar" id="userAvatar">JD</div>
+            <div class="user-info">
+              <h4 id="userName">John Doe</h4>
+              <span id="userEmail">john@example.com</span>
+            </div>
+            <button
+              id="logoutBtn"
+              style="
+                background: none;
+                border: none;
+                color: var(--dark-gray);
+                cursor: pointer;
+                margin-left: 10px;
+              "
+            >
+              <i class="fas fa-sign-out-alt"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="homeSection">
+      <div class="container hero-container">
+        <h2>Your Voice Matters in Governance</h2>
+        <p>
+          Register and track grievances with government departments through our
+          transparent, efficient portal. Ensure your concerns are addressed
+          promptly with our dedicated grievance redressal system.
+        </p>
+        <a href="#" class="btn btn-hero" data-section="file-complaint">
+          <i class="fas fa-plus-circle"></i> File a Complaint
+        </a>
+      </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+      <!-- Categories Section -->
+      <section id="categoriesSection">
+        <div class="section-title">
+          <h2>Complaint Categories</h2>
+          <p>
+            Select a category to file your grievance with the concerned
+            department
+          </p>
+        </div>
+
+        <div class="categories">
+          <div class="category-card">
+            <div class="category-icon">
+              <i class="fas fa-bolt"></i>
+            </div>
+            <h3>Electricity</h3>
+            <p>Power outages, billing issues, electrical hazards</p>
+          </div>
+
+          <div class="category-card">
+            <div class="category-icon">
+              <i class="fas fa-tint"></i>
+            </div>
+            <h3>Water Supply</h3>
+            <p>Water shortage, quality issues, pipeline problems</p>
+          </div>
+
+          <div class="category-card">
+            <div class="category-icon">
+              <i class="fas fa-road"></i>
+            </div>
+            <h3>Roads & Transport</h3>
+            <p>Potholes, traffic issues, public transport</p>
+          </div>
+
+          <div class="category-card">
+            <div class="category-icon">
+              <i class="fas fa-trash"></i>
+            </div>
+            <h3>Sanitation</h3>
+            <p>Garbage collection, cleanliness, drainage</p>
+          </div>
+
+          <div class="category-card">
+            <div class="category-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>Law & Order</h3>
+            <p>Police services, safety concerns, legal issues</p>
+          </div>
+
+          <div class="category-card">
+            <div class="category-icon">
+              <i class="fas fa-heartbeat"></i>
+            </div>
+            <h3>Healthcare</h3>
+            <p>Hospital services, medical facilities, health camps</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- File Complaint Section -->
+      <section id="fileComplaintSection" style="display: none">
+        <div class="section-title">
+          <h2>File a New Complaint</h2>
+          <p>
+            Provide detailed information about your grievance for prompt
+            resolution
+          </p>
+        </div>
+
+        <div class="complaint-form">
+          <form id="complaintForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fullName" class="required">Full Name</label>
+                <input type="text" id="fullName" required />
+              </div>
+
+              <div class="form-group">
+                <label for="email" class="required">Email Address</label>
+                <input type="email" id="email" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone" class="required">Phone Number</label>
+                <input type="tel" id="phone" required />
+              </div>
+
+              <div class="form-group">
+                <label for="category" class="required"
+                  >Complaint Category</label
+                >
+                <select id="category" required>
+                  <option value="">Select a category</option>
+                  <option value="Electricity">Electricity</option>
+                  <option value="Water Supply">Water Supply</option>
+                  <option value="Roads & Transport">Roads & Transport</option>
+                  <option value="Sanitation">Sanitation</option>
+                  <option value="Law & Order">Law & Order</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Education">Education</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="subject" class="required">Complaint Subject</label>
+              <input
+                type="text"
+                id="subject"
+                required
+                placeholder="Brief summary of your complaint"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="description" class="required"
+                >Complaint Description</label
+              >
+              <textarea
+                id="description"
+                required
+                placeholder="Please provide detailed information about your complaint, including location, time, and any other relevant details..."
+              ></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="state" class="required">State</label>
+
+                <select id="state" required>
+                  <option value="">Select State / UT</option>
+
+                  <!-- States -->
+                  <option>Andhra Pradesh</option>
+                  <option>Arunachal Pradesh</option>
+                  <option>Assam</option>
+                  <option>Bihar</option>
+                  <option>Chhattisgarh</option>
+                  <option>Goa</option>
+                  <option>Gujarat</option>
+                  <option>Haryana</option>
+                  <option>Himachal Pradesh</option>
+                  <option>Jharkhand</option>
+                  <option>Karnataka</option>
+                  <option>Kerala</option>
+                  <option>Madhya Pradesh</option>
+                  <option>Maharashtra</option>
+                  <option>Manipur</option>
+                  <option>Meghalaya</option>
+                  <option>Mizoram</option>
+                  <option>Nagaland</option>
+                  <option>Odisha</option>
+                  <option>Punjab</option>
+                  <option>Rajasthan</option>
+                  <option>Sikkim</option>
+                  <option>Tamil Nadu</option>
+                  <option>Telangana</option>
+                  <option>Tripura</option>
+                  <option>Uttar Pradesh</option>
+                  <option>Uttarakhand</option>
+                  <option>West Bengal</option>
+
+                  <!-- Union Territories -->
+                  <option>Andaman & Nicobar Islands</option>
+                  <option>Chandigarh</option>
+                  <option>Dadra & Nagar Haveli and Daman & Diu</option>
+                  <option>Delhi</option>
+                  <option>Jammu & Kashmir</option>
+                  <option>Ladakh</option>
+                  <option>Lakshadweep</option>
+                  <option>Puducherry</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="district" class="required">District</label>
+                <input
+                  type="text"
+                  id="district"
+                  required
+                  placeholder="Enter your district"
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="pincode" class="required">Pincode</label>
+                <input
+                  type="text"
+                  id="pincode"
+                  required
+                  placeholder="Enter 6-digit pincode"
+                  pattern="[0-9]{6}"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="landmark">Nearest Landmark</label>
+                <input
+                  type="text"
+                  id="landmark"
+                  placeholder="Optional: Near police station, park, etc."
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="address" class="required">Full Address</label>
+              <textarea
+                id="address"
+                required
+                placeholder="House no., Street, Area, City..."
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Upload Supporting Documents (Optional)</label>
+              <div class="file-upload" onclick="document.getElementById('fileInput').click()">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p><strong>Click to upload files</strong> or drag and drop</p>
+              <p>PNG, JPG, PDF up to 5MB</p>
+
+  <!-- ⭐ REAL INPUT -->
+  <input type="file" id="fileInput" style="display: none" />
+</div>
+
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p><strong>Click to upload files</strong> or drag and drop</p>
+                <p>PNG, JPG, PDF up to 5MB</p>
+              </div>
+            </div>
+
+            <button type="submit" class="btn submit-btn">
+              <i class="fas fa-paper-plane"></i> Submit Complaint
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Track Complaint Section -->
+      <section id="trackComplaintSection" style="display: none">
+        <div class="section-title">
+          <h2>Track Your Complaint</h2>
+          <p>Monitor the status of your grievance using your tracking ID</p>
+        </div>
+
+        <div class="track-section">
+          <div class="track-form">
+            <input
+              type="text"
+              id="trackingIdInput"
+              placeholder="Enter your complaint ID"
+            />
+            <button id="trackBtn">Track Complaint</button>
+          </div>
+
+          <div class="track-result" id="trackResult">
+            <div class="track-header">
+              <h3>Complaint Status</h3>
+              <span id="trackStatus" class="status-badge">Pending</span>
+            </div>
+
+            <div class="form-row">
+              <div>
+                <p><strong>Tracking ID:</strong> <span id="trackId"></span></p>
+                <p>
+                  <strong>Category:</strong> <span id="trackCategory"></span>
+                </p>
+                <p>
+                  <strong>Date Submitted:</strong> <span id="trackDate"></span>
+                </p>
+              </div>
+              <div>
+                <p>
+                  <strong>Status Updated:</strong>
+                  <span id="trackUpdate"></span>
+                </p>
+                <p>
+                  <strong>Assigned To:</strong>
+                  <span id="trackDepartment">—</span>
+                </p>
+                <p>
+                  <strong>Estimated Resolution:</strong>
+                  <span id="trackResolution">—</span>
+                </p>
+              </div>
+            </div>
+
+            <div style="margin-top: 24px">
+              <h4 style="margin-bottom: 12px">Progress Updates:</h4>
+              <ul id="trackUpdates" style="list-style-type: none"></ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- My Complaints Section -->
+      <section id="myComplaintsSection" style="display: none">
+        <div class="section-title">
+          <h2>My Complaints</h2>
+          <p>View all your submitted complaints and their current status</p>
+        </div>
+
+        <div class="complaints-container">
+          <div class="complaints-list" id="complaintsList">
+            <!-- Complaints will be loaded here dynamically -->
+            <div class="no-complaints" id="noComplaints">
+              <p
+                style="
+                  text-align: center;
+                  font-size: 1.1rem;
+                  color: var(--text-light);
+                  padding: 60px 0;
+                  background-color: var(--white);
+                  border-radius: var(--radius-lg);
+                  border: 1px solid var(--medium-gray);
+                "
+              >
+                You haven't filed any complaints yet. <br />
+                <a
+                  href="#"
+                  data-section="file-complaint"
+                  style="
+                    color: var(--primary-blue);
+                    font-weight: 600;
+                    text-decoration: none;
+                  "
+                  >File your first complaint</a
+                >
+                to get started.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Login to Your Account</h3>
+          <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="loginForm">
+            <div class="form-group">
+              <label for="loginEmail">Email Address</label>
+              <input type="email" id="loginEmail" required />
+            </div>
+
+            <div class="form-group">
+              <label for="loginPassword">Password</label>
+              <input type="password" id="loginPassword" required />
+            </div>
+
+            <button type="submit" class="btn submit-btn" style="width: 100%">
+              <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+          </form>
+
+          <div class="form-links">
+            <p>
+              Don't have an account?
+              <a href="#" id="showSignup">Create Account</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal" id="signupModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Create New Account</h3>
+          <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="signupForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="signupName">Full Name</label>
+                <input type="text" id="signupName" required />
+              </div>
+
+              <div class="form-group">
+                <label for="signupPhone">Phone Number</label>
+                <input type="tel" id="signupPhone" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="signupEmail">Email Address</label>
+              <input type="email" id="signupEmail" required />
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="signupPassword">Password</label>
+                <input type="password" id="signupPassword" required />
+              </div>
+
+              <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" required />
+              </div>
+            </div>
+
+            <button type="submit" class="btn submit-btn" style="width: 100%">
+              <i class="fas fa-user-plus"></i> Create Account
+            </button>
+          </form>
+
+          <div class="form-links">
+            <p>
+              Already have an account? <a href="#" id="showLogin">Sign In</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+  <div class="container">
+    <div class="footer-content">
+
+      <!-- LEFT SECTION -->
+      <div class="footer-column">
+        <h3>GovGrievance</h3>
+        <p>
+          A transparent platform for citizens to register complaints and
+          track their resolution with government departments.
+        </p>
+
+        <div class="contact-info">
+
+          <!-- EMAIL -->
+          <div>
+            <i class="fas fa-envelope"></i>
+            <span>kanojiashashank87@gmail.com</span>
+          </div>
+
+          <!-- LINKEDIN (CLEAN TEXT + CLICKABLE) -->
+          <div>
+            <i class="fab fa-linkedin"></i>
+            <a 
+              href="https://www.linkedin.com/in/shashank-kanojia-a2413924b/" 
+              target="_blank"
+              style="color: white; text-decoration: none;"
+            >
+              LinkedIn
+            </a>
+          </div>
+
+          <!-- ❌ REMOVED LOCATION -->
+        </div>
+      </div>
+
+      <!-- QUICK LINKS -->
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#" data-section="home">Home</a></li>
+          <li><a href="#" data-section="file-complaint">File a Complaint</a></li>
+          <li><a href="#" data-section="track-complaint">Track Complaint</a></li>
+          <li><a href="#" data-section="my-complaints">My Complaints</a></li>
+        </ul>
+      </div>
+
+      <!-- DEPARTMENTS (WITH REAL LINKS) -->
+      <div class="footer-column">
+        <h3>Departments</h3>
+        <ul>
+          <li>
+            <a href="https://mohua.gov.in/" target="_blank">
+              Municipal Corporation
+            </a>
+          </li>
+          <li>
+            <a href="https://powermin.gov.in/" target="_blank">
+              Electricity Department
+            </a>
+          </li>
+          <li>
+            <a href="https://jalshakti-dowr.gov.in/" target="_blank">
+              Water Board
+            </a>
+          </li>
+          <li>
+            <a href="https://mha.gov.in/" target="_blank">
+              Police Department
+            </a>
+          </li>
+          <li>
+            <a href="https://www.mohfw.gov.in/" target="_blank">
+              Health Department
+            </a>
+          </li>
+          <li>
+            <a href="https://morth.nic.in/" target="_blank">
+              Transport Department
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- (REMOVED CONNECT SECTION COMPLETELY) -->
+
+    </div>
+
+    <div class="copyright">
+      <p>
+        &copy; 2026 GovGrievance - Government Grievance Redressal System.
+        All rights reserved.
+      </p>
+
+      <!-- OPTIONAL BUT STRONG FOR RESUME -->
+      <p style="margin-top: 5px; font-size: 0.9rem;">
+        Developed by Shashank Kanojia
+      </p>
+    </div>
+  </div>
+</footer>
+
+    <!-- JavaScript -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const API_BASE = "http://localhost:5000/api";
+
+        /* ================= SECTIONS ================= */
+
+        const sections = {
+          home: document.getElementById("homeSection"),
+          "file-complaint": document.getElementById("fileComplaintSection"),
+          "track-complaint": document.getElementById("trackComplaintSection"),
+          "my-complaints": document.getElementById("myComplaintsSection"),
+          categories: document.getElementById("categoriesSection"),
+        };
+
+        function setActiveNav(sectionName) {
+          document
+            .querySelectorAll("nav a")
+            .forEach((a) => a.classList.remove("active"));
+          const activeLink = document.querySelector(
+            `nav a[data-section="${sectionName}"]`,
+          );
+          if (activeLink) activeLink.classList.add("active");
+        }
+
+        function showSection(name) {
+          Object.values(sections).forEach((sec) => {
+            if (sec) sec.style.display = "none";
+          });
+
+          if (sections[name]) sections[name].style.display = "block";
+
+          if (name === "home") {
+            sections.home.style.display = "block";
+            sections.categories.style.display = "block";
+          }
+
+          setActiveNav(name);
+        }
+
+        document.querySelectorAll("[data-section]").forEach((link) => {
+          link.addEventListener("click", (e) => {
+            e.preventDefault();
+            showSection(link.getAttribute("data-section"));
+          });
+        });
+
+        document.querySelectorAll(".category-card").forEach((card) => {
+          card.addEventListener("click", () => showSection("file-complaint"));
+        });
+
+        /* ================= ELEMENTS ================= */
+
+        const loginBtn = document.getElementById("loginBtn");
+        const signupBtn = document.getElementById("signupBtn");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        const loginModal = document.getElementById("loginModal");
+        const signupModal = document.getElementById("signupModal");
+
+        const loginForm = document.getElementById("loginForm");
+        const signupForm = document.getElementById("signupForm");
+        const complaintForm = document.getElementById("complaintForm");
+
+        const userProfile = document.getElementById("userProfile");
+        const authButtons = document.getElementById("authButtons");
+
+        const complaintsList = document.getElementById("complaintsList");
+        const noComplaints = document.getElementById("noComplaints");
+
+        const trackBtn = document.getElementById("trackBtn");
+        const trackingIdInput = document.getElementById("trackingIdInput");
+        const trackResult = document.getElementById("trackResult");
+
+        const trackId = document.getElementById("trackId");
+        const trackCategory = document.getElementById("trackCategory");
+        const trackStatus = document.getElementById("trackStatus");
+        const trackDate = document.getElementById("trackDate");
+
+        const trackDepartment = document.getElementById("trackDepartment");
+        const trackUpdate = document.getElementById("trackUpdate");
+        const trackResolution = document.getElementById("trackResolution");
+        const trackUpdates = document.getElementById("trackUpdates");
+
+        /* ================= MODALS ================= */
+
+        loginBtn.onclick = () => loginModal.classList.add("active");
+        signupBtn.onclick = () => signupModal.classList.add("active");
+
+        document.querySelectorAll(".close-modal").forEach((btn) => {
+          btn.onclick = () => btn.closest(".modal").classList.remove("active");
+        });
+
+        document.getElementById("showSignup").onclick = () => {
+          loginModal.classList.remove("active");
+          signupModal.classList.add("active");
+        };
+
+        document.getElementById("showLogin").onclick = () => {
+          signupModal.classList.remove("active");
+          loginModal.classList.add("active");
+        };
+
+        /* ================= USER UI ================= */
+
+        function loadUserUI() {
+          const user = JSON.parse(localStorage.getItem("user"));
+          if (!user) return;
+
+          authButtons.style.display = "none";
+          userProfile.classList.add("active");
+
+          document.getElementById("userName").innerText = user.name;
+          document.getElementById("userEmail").innerText = user.email;
+          document.getElementById("userAvatar").innerText = user.name
+            .charAt(0)
+            .toUpperCase();
+
+          if (user.role === "admin") {
+            const adminNav = document.getElementById("adminNav");
+            if (adminNav) adminNav.style.display = "block";
+          }
+
+          loadMyComplaints();
+        }
+
+        /* ================= LOGIN ================= */
+
+        loginForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const res = await fetch(`${API_BASE}/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: loginEmail.value,
+              password: loginPassword.value,
+            }),
+          });
+
+          const data = await res.json();
+
+          if (res.ok) {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user));
+
+            loginModal.classList.remove("active");
+            loadUserUI();
+          } else {
+            alert(data.message);
+          }
+        });
+
+        /* ================= SIGNUP ================= */
+
+        signupForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          try {
+            const res = await fetch(`${API_BASE}/auth/register`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                name: signupName.value,
+                email: signupEmail.value,
+                phone: signupPhone.value,
+                password: signupPassword.value,
+              }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+              alert("Registered Successfully!");
+              signupModal.classList.remove("active");
+            } else {
+              alert(data.message || "Registration failed");
+            }
+          } catch (err) {
+            console.error("Signup Error:", err);
+            alert("Server error. Check backend.");
+          }
+        });
+
+        /* ================= CREATE COMPLAINT ================= */
+
+        complaintForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const token = localStorage.getItem("token");
+        if (!token) return alert("Login First");
+
+        try {
+          const formData = new FormData();
+
+          formData.append("title", subject.value);
+          formData.append("description", description.value);
+          formData.append("category", category.value);
+
+          const fileInput = document.getElementById("fileInput");
+          if (fileInput.files[0]) {
+          formData.append("file", fileInput.files[0]);
+    }
+
+          const res = await fetch(`${API_BASE}/complaints`, {
+          method: "POST",
+          headers: {
+          Authorization: "Bearer " + token, // ❌ NO Content-Type here
+      },
+          body: formData,
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message || "Error submitting complaint");
+      return;
+    }
+
+    alert("Complaint Submitted Successfully ✅");
+
+    complaintForm.reset();
+
+    await loadMyComplaints();
+    showSection("my-complaints");
+
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong");
+  }
+});
+
+        /* ================= LOAD MY COMPLAINTS ================= */
+
+        async function loadMyComplaints() {
+          const token = localStorage.getItem("token");
+          if (!token) return;
+
+          const res = await fetch(`${API_BASE}/complaints`, {
+            headers: { Authorization: "Bearer " + token },
+          });
+
+          const data = await res.json();
+
+          complaintsList.innerHTML = "";
+
+          if (!data.length) {
+            complaintsList.appendChild(noComplaints);
+            return;
+          }
+
+          data.forEach((c) => {
+            const card = document.createElement("div");
+            card.className = "complaint-card";
+
+            card.innerHTML = `
+<div class="complaint-header">
+<h3>${c.title}</h3>
+<span>${c.status}</span>
+</div>
+
+<p>${c.description}</p>
+
+${
+  c.file
+    ? `<img src="${c.file}" style="width:200px;margin-top:10px;border-radius:8px;" />`
+    : ""
+}
+
+<small>ID: ${c._id}</small>
+`;
+
+            complaintsList.appendChild(card);
+          });
+        }
+
+        /* ================= TRACK COMPLAINT ================= */
+
+        trackBtn.addEventListener("click", async () => {
+          const id = trackingIdInput.value.trim();
+          if (!id) return alert("Enter ID");
+
+          const token = localStorage.getItem("token");
+
+          const res = await fetch(`${API_BASE}/complaints/${id}`, {
+            headers: { Authorization: "Bearer " + token },
+          });
+
+          if (!res.ok) return alert("Complaint Not Found");
+
+          const data = await res.json();
+
+          trackResult.classList.add("active");
+
+          trackId.innerText = data._id;
+          trackCategory.innerText = data.category;
+          trackDate.innerText = new Date(data.createdAt).toLocaleDateString();
+
+          trackDepartment.innerText = data.department || "-";
+          trackUpdate.innerText = new Date(data.updatedAt).toLocaleDateString();
+          trackResolution.innerText = "Pending";
+
+          trackStatus.innerText = data.status;
+          trackStatus.className = "status-badge status-pending";
+
+          if (data.status === "Resolved")
+            trackStatus.className = "status-badge status-resolved";
+
+          if (data.status === "In Progress")
+            trackStatus.className = "status-badge status-inprogress";
+
+          trackUpdates.innerHTML = "";
+
+          data.history.forEach((h) => {
+            const li = document.createElement("li");
+            li.style.marginBottom = "10px";
+
+            li.innerHTML = `<strong>${new Date(h.date).toLocaleDateString()}</strong> — ${h.message}`;
+
+            trackUpdates.appendChild(li);
+          });
+        });
+
+        /* ================= LOGOUT ================= */
+
+        logoutBtn.onclick = () => {
+          localStorage.clear();
+          location.reload();
+        };
+
+        loadUserUI();
+      });
+    </script>
+  </body>
+</html>
