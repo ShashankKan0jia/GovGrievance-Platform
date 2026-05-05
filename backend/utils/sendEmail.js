@@ -1,38 +1,17 @@
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
-// ✅ Create transporter ONCE (not inside function)
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  connectionTimeout: 10000, // ⏱ prevent hanging
-  greetingTimeout: 10000,
-  socketTimeout: 10000,
-});
-
-// Optional but useful check
-transporter.verify((err, success) => {
-  if (err) {
-    console.error("❌ Email transporter error:", err.message);
-  } else {
-    console.log("✅ Email server is ready");
-  }
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendEmail = async (to, subject, text) => {
   try {
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to,
+    await resend.emails.send({
+      from: "GovGrievance <onboarding@resend.dev>",
+      to: [to],
       subject,
-      text,
-    };
+      html: `<p>${text}</p>`,
+    });
 
-    const info = await transporter.sendMail(mailOptions);
-
-    console.log("📧 Email sent:", info.response);
+    console.log("📧 Email sent successfully");
   } catch (error) {
     console.error("❌ EMAIL ERROR:", error.message);
   }
