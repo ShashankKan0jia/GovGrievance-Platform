@@ -51,19 +51,36 @@ router.put(
 
       // ⭐ SEND EMAIL
       await sendEmail(
-        user.email,
-        "Complaint Status Updated",
-        `Hello ${user.name},
+        "Complaint Status Updated 🔄",
+        `
+  Hello ${user.name},<br/><br/>
 
-Your complaint status has been updated.
+  Your complaint status has been updated.<br/><br/>
 
-Complaint ID: ${complaint._id}
-New Status: ${status}
+  <strong>Complaint ID:</strong> ${complaint._id}<br/>
+  <strong>Title:</strong> ${complaint.title}<br/>
+  <strong>Status:</strong> 
+  <span style="
+    padding:4px 8px;
+    border-radius:6px;
+    color:white;
+    background:${
+      status === "Resolved"
+        ? "#28a745"
+        : status === "In Progress"
+          ? "#ffc107"
+          : "#dc3545"
+    };
+  ">
+    ${status}
+  </span>
+  <br/><br/>
 
-Please login to check full details.
+  Please login to check full details.<br/><br/>
 
-Thank you,
-GovGrievance Team`,
+  Thank you,<br/>
+  <strong>GovGrievance Team</strong>
+  `,
       );
 
       res.json({
