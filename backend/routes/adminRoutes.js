@@ -38,7 +38,6 @@ router.put(
 
       complaint.status = status;
 
-      // add history timeline
       complaint.history.push({
         status: status,
         message: "Status changed to " + status,
@@ -46,41 +45,45 @@ router.put(
 
       await complaint.save();
 
-      // ⭐ GET USER
       const user = await User.findById(complaint.userId);
 
-      // ⭐ SEND EMAIL
+      // 🎨 STATUS COLOR
+      const statusColor =
+        status === "Resolved"
+          ? "#28a745"
+          : status === "In Progress"
+            ? "#ffc107"
+            : "#dc3545";
+
+      // ✅ SEND EMAIL (CLEAN HTML)
       await sendEmail(
         "Complaint Status Updated 🔄",
         `
-  Hello ${user.name},<br/><br/>
+        <p>Hello <strong>${user.name}</strong>,</p>
 
-  Your complaint status has been updated.<br/><br/>
+        <p>Your complaint status has been updated.</p>
 
-  <strong>Complaint ID:</strong> ${complaint._id}<br/>
-  <strong>Title:</strong> ${complaint.title}<br/>
-  <strong>Status:</strong> 
-  <span style="
-    padding:4px 8px;
-    border-radius:6px;
-    color:white;
-    background:${
-      status === "Resolved"
-        ? "#28a745"
-        : status === "In Progress"
-          ? "#ffc107"
-          : "#dc3545"
-    };
-  ">
-    ${status}
-  </span>
-  <br/><br/>
+        <div style="margin:15px 0; padding:12px; background:#f9fafb; border-radius:8px;">
+          <p style="margin:5px 0;"><strong>Complaint ID:</strong> ${complaint._id}</p>
+          <p style="margin:5px 0;"><strong>Title:</strong> ${complaint.title}</p>
+          <p style="margin:5px 0;">
+            <strong>Status:</strong> 
+            <span style="
+              padding:5px 10px;
+              border-radius:6px;
+              color:white;
+              background:${statusColor};
+              font-size:13px;
+            ">
+              ${status}
+            </span>
+          </p>
+        </div>
 
-  Please login to check full details.<br/><br/>
+        <p>Please login to check full details.</p>
 
-  Thank you,<br/>
-  <strong>GovGrievance Team</strong>
-  `,
+        <p>Thank you,<br/><strong>GovGrievance Team</strong></p>
+        `,
       );
 
       res.json({
