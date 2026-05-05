@@ -6,9 +6,18 @@ const sendEmail = async (to, subject, text) => {
   try {
     await resend.emails.send({
       from: "GovGrievance <onboarding@resend.dev>",
-      to: [to],
-      subject,
-      html: `<p>${text}</p>`,
+
+      // ✅ FORCE all emails to your inbox (demo mode)
+      to: "kanojiashashank87@gmail.com",
+
+      subject: subject,
+
+      html: `
+        <div style="font-family: Arial; padding: 10px;">
+          <h2>GovGrievance Notification</h2>
+          <p>${text}</p>
+        </div>
+      `,
     });
 
     console.log("📧 Email sent successfully");
